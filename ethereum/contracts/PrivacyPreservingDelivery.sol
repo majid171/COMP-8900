@@ -13,13 +13,13 @@ contract PrivacyPreservingDelivery {
     mapping(string => string) public deliveryAddress;
     DeliveryAgent deliveryAgent;
     
-    modifier restricted(string agentName) {
+    modifier restricted(string memory agentName) {
         require(msg.sender == deliveryAgent.agentAddress);
-        require(agentName == deliveryAgent.name);
+        // require();
         _;
     }
     
-    constructor(string fullAddress) public {
+    constructor(string memory fullAddress) {
         owner = msg.sender;
         
         // There will be a standard in terms of the order in which the address is supplied
@@ -30,11 +30,11 @@ contract PrivacyPreservingDelivery {
         // ...
     }
     
-    function getNextAddressPiece(string deliveryAgentName) public restricted{
+    function getNextAddressPiece(string memory deliveryAgentName) public restricted(deliveryAgentName){
         // ...
     }
     
-    function getDeliveryAgents() public {
-        // ...
+    function getDeliveryAgents() public view returns (DeliveryAgent memory){
+        return deliveryAgent;
     }
 }
