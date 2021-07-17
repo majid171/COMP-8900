@@ -6,8 +6,6 @@ contract PrivacyPreservingDelivery {
 
     address owner;
     address deliveryAgent;
-
-    //3
     mapping(string => string) public deliveryAddress;
     
     modifier restricted(string memory agentAddress) {
@@ -15,12 +13,15 @@ contract PrivacyPreservingDelivery {
         _;
     }
     
-    //0
-    constructor(string memory fullAddress) {
+    constructor(string[] memory fullAddress) {
         owner = msg.sender;
-        
-        // There will be a standard in terms of the order in which the address is supplied
-        // Country, Province, City, Street Name, Street Number, Postal Code, Unit Number
+        deliveryAddress["Country"] = fullAddress[0];
+        deliveryAddress["Province"] = fullAddress[1];
+        deliveryAddress["City"] = fullAddress[2];
+        deliveryAddress["StreetName"] = fullAddress[3];
+        deliveryAddress["StreetAddress"] = fullAddress[4];
+        deliveryAddress["PostalCode"] = fullAddress[5];
+        deliveryAddress["UnitNumber"] = fullAddress[6];    
     }
     
     //2
