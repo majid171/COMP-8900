@@ -3,22 +3,19 @@
 pragma solidity ^0.8.6;
 
 contract PrivacyPreservingDelivery {
-   
-    struct DeliveryAgent{
-        string name;
-        address agentAddress;
-    }
-   
+
     address owner;
+    address deliveryAgent;
+
+    //3
     mapping(string => string) public deliveryAddress;
-    DeliveryAgent deliveryAgent;
     
-    modifier restricted(string memory agentName) {
-        require(msg.sender == deliveryAgent.agentAddress);
-        // require();
+    modifier restricted(string memory agentAddress) {
+        require(msg.sender == deliveryAgent);
         _;
     }
     
+    //0
     constructor(string memory fullAddress) {
         owner = msg.sender;
         
@@ -26,15 +23,18 @@ contract PrivacyPreservingDelivery {
         // Country, Province, City, Street Name, Street Number, Postal Code, Unit Number
     }
     
+    //2
     function registerDeliveryAgent() public {
         // ...
     }
     
-    function getNextAddressPiece(string memory deliveryAgentName) public restricted(deliveryAgentName){
+    //1
+    function getNextAddressPiece(string memory deliveryAgentAddress) public restricted(deliveryAgentAddress){
         // ...
     }
     
-    function getDeliveryAgents() public view returns (DeliveryAgent memory){
-        return deliveryAgent;
-    }
+    //to-do
+    // function getDeliveryAgents(ordernumber) public view returns (DeliveryAgent memory){
+    //     if(ordernumber == this.ordernumber) return deliveryAgent;
+    // }
 }
