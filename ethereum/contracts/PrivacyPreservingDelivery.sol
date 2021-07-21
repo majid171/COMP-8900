@@ -50,9 +50,6 @@ contract PrivacyPreservingDelivery {
         commits.push(commitChoice);
     }
     
-    function decrypt(bytes32 hashData) public view restricted returns(bytes32) {
-    }
-    
     function reveal() public payable returns(string memory){
         require(stage == Stages.FirstReveal || stage == Stages.SecondReveal || stage == Stages.ThirdReveal || stage == Stages.FourthReveal);
         require(commitIndex < commits.length);
