@@ -23,13 +23,14 @@ contract PrivacyPreservingDelivery {
     CommitChoice[] public commits;
     Stages stage;
     uint64 commitIndex;
-    
+    constructor() {}
+
     modifier restricted() {
         require(msg.sender == owner);
         _;
     }
     
-    constructor(string memory dataHash1, string memory dataHash2, string memory dataHash3, string memory dataHash4) {
+    function commitAddresses (string memory dataHash1, string memory dataHash2, string memory dataHash3, string memory dataHash4) public {
         owner = msg.sender;
         stage = Stages.InitialCommit;
         commitIndex = 0;
@@ -49,8 +50,10 @@ contract PrivacyPreservingDelivery {
         CommitChoice memory commitChoice = CommitChoice(dataHash, uint64(block.number), false);
         commits.push(commitChoice);
     }
-    
-    function reveal() public payable returns(string memory){
+
+    event Reveal(string stepReveal);
+
+    function reveal() public payable {
         require(stage == Stages.FirstReveal || stage == Stages.SecondReveal || stage == Stages.ThirdReveal || stage == Stages.FourthReveal);
         require(commitIndex < commits.length);
         require(commits[commitIndex].revealed == false);
@@ -61,7 +64,6 @@ contract PrivacyPreservingDelivery {
         else if(stage == Stages.SecondReveal) stage = Stages.ThirdReveal;
         else if(stage == Stages.ThirdReveal) stage = Stages.FourthReveal;
         else if(stage == Stages.FourthReveal) stage = Stages.Delivered;
-        
-        return commits[commitIndex++].commitment;
+        emit Reveal(commits[commitIndex++].commitment);
     }
 }
